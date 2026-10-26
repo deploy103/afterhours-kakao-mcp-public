@@ -1,0 +1,27 @@
+[Unit]
+Description=Standalone authenticated KakaoTalk MCP
+After=network.target
+
+[Service]
+Type=simple
+User=afterhours-kakao
+Group=afterhours-kakao
+WorkingDirectory=/srv/apps/afterhours-kakao-mcp
+Environment=KAKAO_CONFIG=/etc/afterhours-kakao-mcp/config.json
+Environment=PYTHONDONTWRITEBYTECODE=1
+LoadCredential=mcp-token:/etc/afterhours-kakao-mcp/mcp-token
+LoadCredential=windows-agent-token:/etc/afterhours-kakao-mcp/windows-agent-token
+# Optional event producer: enable only with an approved, verified collector.
+# LoadCredential=event-token:/etc/afterhours-kakao-mcp/event-token
+StateDirectory=afterhours-kakao-mcp
+StateDirectoryMode=0700
+UMask=0077
+ExecStart=/srv/apps/afterhours-kakao-mcp/.venv/bin/uvicorn server:create_app --factory --host 127.0.0.1 --port 8001 --no-access-log --no-proxy-headers
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,3 @@
+# SHA-256 pins cover original bytes, including the controller's CRLF endings.
+vendor/** -text
+vendor/kakaotalk-mcp/src/kakao_mcp/controller.py whitespace=cr-at-eol
